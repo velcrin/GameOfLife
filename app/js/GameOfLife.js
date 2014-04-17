@@ -1,3 +1,5 @@
+/* global GameOfLife */
+
 var GameOfLife = (function () {
     var ALIVE = "alive", DEAD = "dead";
 
