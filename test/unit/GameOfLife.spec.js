@@ -18,7 +18,11 @@ var GameOfLife = (function() {
 
         return {
             calculateState: function (neighbours) {
-                if(getNumberOfAlive(neighbours) < 2) {
+                var liveCellNumber = getNumberOfAlive(neighbours);
+                if(liveCellNumber < 2) {
+                    state = DEAD;
+                }
+                if(liveCellNumber > 3) {
                     state = DEAD;
                 }
             },
@@ -37,24 +41,37 @@ var GameOfLife = (function() {
     }
 
     return {
-        AliveCell: AliveCell,
-        DeadCell: DeadCell
+        AliveCell: AliveCell
     };
-})();
+})(),
+    AliveCell = GameOfLife.AliveCell;
 
 describe('Live cell', function () {
     it('should die when it has fewer than two live neighbours', function () {
-        var cell = new GameOfLife.AliveCell();
+        var cell = new AliveCell();
 
-        cell.calculateState([new GameOfLife.AliveCell()]);
+        cell.calculateState([new AliveCell()]);
 
         cell.isAlive().should.be.false;
     });
     it('should stay alive when it has at least two live neighbours', function () {
-        var cell = new GameOfLife.AliveCell();
+        var cell = new AliveCell();
 
-        cell.calculateState([new GameOfLife.AliveCell(), new GameOfLife.AliveCell()]);
+        cell.calculateState([
+            new AliveCell(),
+            new AliveCell()]);
 
         cell.isAlive().should.be.true;
+    });
+    it('should die when it has more than three live neighbours', function () {
+        var cell = new AliveCell();
+
+        cell.calculateState([
+            new AliveCell(),
+            new AliveCell(),
+            new AliveCell(),
+            new AliveCell()]);
+
+        cell.isAlive().should.be.false;
     });
 });
