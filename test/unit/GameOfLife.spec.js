@@ -74,6 +74,8 @@ describe('Grid', function () {
     it('should have the right number of columns', function () {
         var grid = new Grid(3, 4);
 
+        grid.print();
+
         grid.cells[0].should.have.length(4);
     });
 });

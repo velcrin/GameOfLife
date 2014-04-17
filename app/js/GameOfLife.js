@@ -10,7 +10,6 @@ var GameOfLife = (function () {
                 state = ALIVE;
             }, stay = function () {
             },
-            // there is a maximum of 8 neighbours
             cycle = [0, die, stay, live, die, die, die, die, die];
 
         return {
@@ -25,6 +24,9 @@ var GameOfLife = (function () {
             },
             isAlive: function () {
                 return state === ALIVE;
+            },
+            get state() {
+                return state;
             }
         };
     }
@@ -32,32 +34,47 @@ var GameOfLife = (function () {
     function Grid(rows, columns) {
 
         function buildRow(row, size) {
-            for(var i = 0; i < size; i++) {
+            for (var i = 0; i < size; i++) {
                 row.push(new DeadCell());
             }
         }
+
         function buildCells(rows, columns) {
             var cells = [];
-            for(var i = 0; i < rows; i++) {
+            for (var i = 0; i < rows; i++) {
                 var row = [];
                 buildRow(row, columns);
                 cells.push(row);
             }
             return cells;
         }
+
+        function stringify(row, size) {
+            var text = "";
+            for (var i = 0; i < size; i++) {
+                text += row[i].state + " ";
+            }
+            return text.trim();
+        }
+
         var cells = buildCells(rows, columns);
         return {
             get cells() {
                 return cells;
+            },
+            print: function () {
+                for (var i = 0; i < rows; i++) {
+                    console.log(stringify(cells[i], columns));
+                }
             }
         };
     }
 
     return {
-        AliveCell: function() {
+        AliveCell: function () {
             return new Cell(ALIVE);
         },
-        DeadCell: function() {
+        DeadCell: function () {
             return new Cell(DEAD);
         },
         Grid: Grid
