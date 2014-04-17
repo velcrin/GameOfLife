@@ -2,27 +2,25 @@ var GameOfLife = (function () {
     var ALIVE = "alive", DEAD = "dead";
 
     function Cell(initialState) {
-        var state = initialState || DEAD;
-
-        function getNumberOfAlive(neighbours) {
-            var nbAliveCells = 0;
-            neighbours.forEach(function (neighbor) {
-                if (neighbor.isAlive()) {
-                    nbAliveCells += 1;
-                }
-            });
-            return nbAliveCells;
-        }
+        var state = initialState || DEAD,
+            die = function () {
+                state = DEAD;
+            }, live = function () {
+                state = ALIVE;
+            }, stay = function () {
+            },
+            // there is a maximum of 8 neighbours
+            cycle = [0, die, stay, live, die, die, die, die, die];
 
         return {
             calculateState: function (neighbours) {
-                var liveCellNumber = getNumberOfAlive(neighbours);
-                if (liveCellNumber < 2 || liveCellNumber > 3) {
-                    state = DEAD;
-                }
-                if(liveCellNumber === 3) {
-                    state = ALIVE;
-                }
+                var alive = 0;
+                neighbours.forEach(function (neighbor) {
+                    if (neighbor.isAlive()) {
+                        alive += 1;
+                    }
+                });
+                cycle[alive]();
             },
             isAlive: function () {
                 return state === ALIVE;
@@ -36,6 +34,10 @@ var GameOfLife = (function () {
 
     function DeadCell() {
         return new Cell(DEAD);
+    }
+
+    function Grid() {
+
     }
 
     return {
