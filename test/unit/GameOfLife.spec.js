@@ -49,4 +49,11 @@ describe('Live cell', function () {
 
         expect(cell.isAlive()).toBe(false);
     });
+    it('should stay alive when it has at least two live neighbours', function () {
+        var cell = new GameOfLife.AliveCell();
+
+        cell.setNeighbours([new GameOfLife.AliveCell(), new GameOfLife.AliveCell()]);
+
+        expect(cell.isAlive()).toBe(true);
+    });
 });
