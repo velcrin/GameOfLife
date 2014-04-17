@@ -1,3 +1,4 @@
+chai.Should();
 
 var GameOfLife = (function() {
     var ALIVE = "alive", DEAD = "dead";
@@ -16,7 +17,7 @@ var GameOfLife = (function() {
         }
 
         return {
-            setNeighbours: function (neighbours) {
+            calculateState: function (neighbours) {
                 if(getNumberOfAlive(neighbours) < 2) {
                     state = DEAD;
                 }
@@ -45,15 +46,15 @@ describe('Live cell', function () {
     it('should die when it has fewer than two live neighbours', function () {
         var cell = new GameOfLife.AliveCell();
 
-        cell.setNeighbours([new GameOfLife.AliveCell()]);
+        cell.calculateState([new GameOfLife.AliveCell()]);
 
-        expect(cell.isAlive()).toBe(false);
+        cell.isAlive().should.be.false;
     });
     it('should stay alive when it has at least two live neighbours', function () {
         var cell = new GameOfLife.AliveCell();
 
-        cell.setNeighbours([new GameOfLife.AliveCell(), new GameOfLife.AliveCell()]);
+        cell.calculateState([new GameOfLife.AliveCell(), new GameOfLife.AliveCell()]);
 
-        expect(cell.isAlive()).toBe(true);
+        cell.isAlive().should.be.true;
     });
 });
