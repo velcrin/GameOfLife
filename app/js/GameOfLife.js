@@ -13,14 +13,14 @@ var GameOfLife = (function () {
             cycle = [0, die, stay, live, die, die, die, die, die];
 
         return {
-            calculateState: function (neighbours) {
-                var alive = 0;
+            generate: function (neighbours) {
+                var index = 0;
                 neighbours.forEach(function (neighbor) {
                     if (neighbor.isAlive()) {
-                        alive += 1;
+                        index += 1;
                     }
                 });
-                cycle[alive]();
+                cycle[index]();
             },
             isAlive: function () {
                 return state === ALIVE;
@@ -36,12 +36,33 @@ var GameOfLife = (function () {
         return new Cell(DEAD);
     }
 
-    function Grid() {
+    function Grid(rows, columns) {
 
+        function buildRow(row, size) {
+            for(var i = 0; i < size; i++) {
+                row.push(new DeadCell());
+            }
+        }
+        function buildCells(rows, columns) {
+            var cells = [];
+            for(var i = 0; i < rows; i++) {
+                var row = [];
+                buildRow(row, columns);
+                cells.push(row);
+            }
+            return cells;
+        }
+        var cells = buildCells(rows, columns);
+        return {
+            get cells() {
+                return cells;
+            }
+        };
     }
 
     return {
         AliveCell: AliveCell,
-        DeadCell: DeadCell
+        DeadCell: DeadCell,
+        Grid: Grid
     };
 })();
