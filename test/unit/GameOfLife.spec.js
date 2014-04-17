@@ -1,31 +1,52 @@
-var ALIVE = "alive", DEAD = "dead";
 
-function Cell(initialState) {
-    var state = initialState || DEAD;
-    return {
-        setNeighbours: function (neighbours) {
+var GameOfLife = (function() {
+    var ALIVE = "alive", DEAD = "dead";
+
+    function Cell(initialState) {
+        var state = initialState || DEAD;
+
+        function getNumberOfAlive(neighbours) {
             var nbAliveCells = 0;
-            neighbours.forEach(function(neighbor) {
-                if(neighbor.state === ALIVE) {
+            neighbours.forEach(function (neighbor) {
+                if (neighbor.isAlive()) {
                     nbAliveCells += 1;
                 }
             });
-            if(nbAliveCells < 2) {
-                state = DEAD;
-            }
-        },
-        get state() {
-            return state;
+            return nbAliveCells;
         }
+
+        return {
+            setNeighbours: function (neighbours) {
+                if(getNumberOfAlive(neighbours) < 2) {
+                    state = DEAD;
+                }
+            },
+            isAlive: function() {
+                return state === ALIVE;
+            }
+        };
+    }
+
+    function AliveCell() {
+        return new Cell(ALIVE);
+    }
+
+    function DeadCell() {
+        return new Cell(DEAD);
+    }
+
+    return {
+        AliveCell: AliveCell,
+        DeadCell: DeadCell
     };
-}
+})();
 
 describe('Live cell', function () {
     it('should die when it has fewer than two live neighbours', function () {
-        var cell = new Cell(ALIVE);
+        var cell = new GameOfLife.AliveCell();
 
-        cell.setNeighbours([new Cell(ALIVE)]);
+        cell.setNeighbours([new GameOfLife.AliveCell()]);
 
-        expect(cell.state).toBe(DEAD);
+        expect(cell.isAlive()).toBe(false);
     });
 });
