@@ -1,5 +1,3 @@
-/* global GameOfLife */
-
 var GameOfLife = (function () {
     var ALIVE = "alive", DEAD = "dead";
 
@@ -31,6 +29,14 @@ var GameOfLife = (function () {
                 return state;
             }
         };
+    }
+
+    function AliveCell () {
+        return new Cell(ALIVE);
+    }
+
+    function DeadCell () {
+        return new Cell(DEAD);
     }
 
     function Grid(rows, columns) {
@@ -73,12 +79,8 @@ var GameOfLife = (function () {
     }
 
     return {
-        AliveCell: function () {
-            return new Cell(ALIVE);
-        },
-        DeadCell: function () {
-            return new Cell(DEAD);
-        },
+        AliveCell: AliveCell,
+        DeadCell: DeadCell,
         Grid: Grid
     };
 })();
