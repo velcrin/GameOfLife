@@ -15,7 +15,9 @@ You should write a program that can accept an arbitrary grid of cells, and will 
 The input starting position could be a text file that looks like this:
 
 ## Generation 1:
-<pre><code>4x8
+
+4x8
+<pre><code>
 ........
 ....*...
 ...**...
@@ -25,7 +27,8 @@ And the output could look like this:
 
 ## Generation 2:
 
-<pre><code>4x8
+4x8
+<pre><code>
 ........
 ...**...
 ...**...
