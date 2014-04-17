@@ -2,6 +2,7 @@ var GameOfLife = (function () {
     var ALIVE = "alive", DEAD = "dead";
 
     function Cell(initialState) {
+
         var state = initialState || DEAD,
             die = function () {
                 state = DEAD;
@@ -26,14 +27,6 @@ var GameOfLife = (function () {
                 return state === ALIVE;
             }
         };
-    }
-
-    function AliveCell() {
-        return new Cell(ALIVE);
-    }
-
-    function DeadCell() {
-        return new Cell(DEAD);
     }
 
     function Grid(rows, columns) {
@@ -61,8 +54,12 @@ var GameOfLife = (function () {
     }
 
     return {
-        AliveCell: AliveCell,
-        DeadCell: DeadCell,
+        AliveCell: function() {
+            return new Cell(ALIVE);
+        },
+        DeadCell: function() {
+            return new Cell(DEAD);
+        },
         Grid: Grid
     };
 })();
