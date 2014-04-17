@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/velcrin/GameOfLife.png)](https://codeclimate.com/github/velcrin/GameOfLife)
+[![Build Status](https://travis-ci.org/velcrin/GameOfLife.svg?branch=vincent)](https://travis-ci.org/velcrin/GameOfLife) [![Code Climate](https://codeclimate.com/github/velcrin/GameOfLife.png)](https://codeclimate.com/github/velcrin/GameOfLife)
 # Problem Description
 
 This Kata is about calculating the next generation of Conway's game of life, given any starting position. See http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life for background.
