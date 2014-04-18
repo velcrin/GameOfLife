@@ -1,14 +1,21 @@
 language: node_js
 node_js:
-  - 0.10
-
+- 0.1
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - npm start > /dev/null &
-  - npm run update-webdriver
-  - sleep 1 # give server time to start
-
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- npm start > /dev/null &
+- npm run update-webdriver
+- sleep 1
 script:
-  - node_modules/.bin/karma start test/karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
-  - node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
+- node_modules/.bin/karma start test/karma.conf.js --no-auto-watch --single-run --reporters=dots
+  --browsers=Firefox
+- node_modules/.bin/protractor test/protractor-conf.js --browser=firefox
+deploy:
+  provider: heroku
+  api_key:
+    secure: dH3TSI7j0PPAg4fjekgZiiO5nO9kQLBD/uslRZIi21WPc3sIMyymStGHfe4T4+F3O8eBFkxbSQzMybj5dDJ8ZEUzVsZXL+H0MvLWsviOPPHx6u07CpVZQi68uBUgXojAJ5DGv+7upTQbcqx76uSq38cH39xkCQ1TvQTl3qRp3sQ=
+  app: GameOfLife
+  on:
+    repo: velcrin/GameOfLife
+    branch: vincent
