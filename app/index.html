@@ -3,23 +3,30 @@
 <head>
   <meta charset="utf-8">
   <title>My AngularJS App</title>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/yeti/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
-
+  <div class="container">
+    <h1>Welcome to the Game Of Life. Actually a kata in progress...</h1>
+    <a href="https://github.com/velcrin/GameOfLife">
+    <div class="progress progress-striped active">
+      <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 65%">
+        <span class="sr-only">65% Complete</span>
+      </div>
+    </div>
+  </a>
+    <p>Check out the code by clicking on the progress bar!</p>
+  </div>
+  
   <div ng-view></div>
-
-  <div>Angular seed app: v<span app-version></span></div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="../bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
