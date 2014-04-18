@@ -15,7 +15,7 @@ deploy:
   provider: heroku
   api_key:
     secure: dH3TSI7j0PPAg4fjekgZiiO5nO9kQLBD/uslRZIi21WPc3sIMyymStGHfe4T4+F3O8eBFkxbSQzMybj5dDJ8ZEUzVsZXL+H0MvLWsviOPPHx6u07CpVZQi68uBUgXojAJ5DGv+7upTQbcqx76uSq38cH39xkCQ1TvQTl3qRp3sQ=
-  app: GameOfLife
+  app: intense-brushlands-6671
   on:
     repo: velcrin/GameOfLife
     branch: vincent
