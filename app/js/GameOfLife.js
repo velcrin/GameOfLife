@@ -1,16 +1,16 @@
 var GameOfLife = (function () {
     var ALIVE = "alive", DEAD = "dead";
 
-    function Cell(initialState) {
+    function Cell(state, coordinates) {
 
-        var state = initialState || DEAD,
-            die = function () {
+        state = state || DEAD;
+        var die = function () {
                 state = DEAD;
             }, live = function () {
                 state = ALIVE;
             }, stay = function () {
             },
-            cycle = [0, die, stay, live, die, die, die, die, die];
+            lifeCycle = [0, die, stay, live, die, die, die, die, die];
 
         return {
             generate: function (neighbours) {
@@ -20,67 +20,64 @@ var GameOfLife = (function () {
                         index += 1;
                     }
                 });
-                cycle[index]();
+                lifeCycle[index]();
             },
             isAlive: function () {
                 return state === ALIVE;
             },
-            get state() {
-                return state;
+            get row() {
+                return coordinates.row;
+            },
+            get column() {
+                return coordinates.column;
             }
         };
     }
 
-    function AliveCell () {
-        return new Cell(ALIVE);
+    function AliveCell(coordiantes) {
+        return new Cell(ALIVE, coordiantes);
     }
 
-    function DeadCell () {
-        return new Cell(DEAD);
+    function DeadCell(coordiantes) {
+        return new Cell(DEAD, coordiantes);
     }
 
     function Grid(rows, columns) {
 
-        function buildRow(row, size) {
-            for (var i = 0; i < size; i++) {
-                row.push(new DeadCell());
-            }
-        }
-
-        function buildCells(rows, columns) {
-            var cells = [];
-            for (var i = 0; i < rows; i++) {
-                var row = [];
-                buildRow(row, columns);
-                cells.push(row);
-            }
-            return cells;
-        }
-
-        function stringify(row, size) {
-            var text = "";
-            for (var i = 0; i < size; i++) {
-                text += row[i].state + " ";
-            }
-            return text.trim();
-        }
-
-        var cells = buildCells(rows, columns);
         return {
-            get cells() {
-                return cells;
-            },
-            print: function () {
-                for (var i = 0; i < rows; i++) {
-                    console.log(stringify(cells[i], columns));
-                }
+            cell: function (coordinates) {
+                return new DeadCell(coordinates);
             }
         };
+    }
+
+    function Neighborhood(cell, grid) {
+        var neighbours = [];
+        [
+            [-1, -1],
+            [-1, 0],
+            [-1, 1],
+            [0, -1],
+            [0, 1],
+            [1, -1],
+            [1, 0],
+            [1, 1]
+        ].forEach(function (coordinates) {
+                neighbours.push(grid.cell({
+                    row: cell.row + coordinates[0],
+                    column: cell.column + coordinates[1]}));
+            });
+        return {
+            generate: function () {
+                cell.generate(neighbours);
+            }
+        }
     }
 
     return {
         AliveCell: AliveCell,
         DeadCell: DeadCell,
-        Grid: Grid
+        Grid: Grid,
+        Neighborhood: Neighborhood
     };
 })();
