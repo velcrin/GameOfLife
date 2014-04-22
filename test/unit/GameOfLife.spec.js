@@ -3,9 +3,34 @@ chai.Should();
 var AliveCell = GameOfLife.AliveCell,
     DeadCell = GameOfLife.DeadCell,
     Grid = GameOfLife.Grid,
-    Neighborhood = GameOfLife.Neighborhood;
+    Neighborhood = GameOfLife.Neighborhood,
+    stringify = function (grid) {
+        var i = 0, line = "", lines = [];
+        grid.scan(function (cell) {
+            line += cell.isAlive() ? "x" : ".";
+            if (++i % 8 === 0) {
+                lines.push(line);
+                line = "";
+            }
+        });
+        return lines;
+    },
+    dump = function (grid) {
+        var lines = stringify(grid);
+        lines.forEach(function (line) {
+            console.log(line);
+        });
+    };
+
 
 describe('Live cell', function () {
+    it('should stay alive when it has no neighbours alive', function () {
+        var cell = new AliveCell();
+
+        cell.generate([new DeadCell()]);
+
+        cell.isAlive().should.be.true;
+    });
     it('should die when it has fewer than two live neighbours', function () {
         var cell = new AliveCell();
 
@@ -87,7 +112,7 @@ describe('Grid', function () {
 
         cell.isAlive().should.be.false;
     });
-    it("should return an alive cell for resurrected coordinates", function () {
+    it("should return an alive cell for resurrected cell coordinates", function () {
         var grid = new Grid(3, 3);
 
         grid.resurrect({
@@ -100,51 +125,44 @@ describe('Grid', function () {
             column: 1
         }).isAlive().should.be.true;
     });
+    it("should iterate over all cells", function () {
+        var grid = new Grid(1, 2),
+            cells = [new DeadCell(), new AliveCell()];
+        grid.resurrect({
+            row: 0,
+            column: 1
+        });
+
+        var i = 0;
+        grid.scan(function (cell) {
+            cell.isAlive().should.equal(cells[i++].isAlive());
+        });
+    });
     it("should return next generation", function () {
         var grid = new Grid(4, 8);
         grid.resurrect({
             row: 1,
             column: 4
         });
-//        grid.resurrect({
-//            row: 2,
-//            column: 3
-//        });
-//        grid.resurrect({
-//            row: 2,
-//            column: 4
-//        });
-//
-//        var i = 0, line = "";
-//        grid.generate().scan(function (cell) {
-//            line += cell.isAlive() ? "x" : ".";
-//            if(++i % 8 === 0) {
-//                console.log(line);
-//                line = "";
-//            }
-//        });
-        grid.cell({
-            row: 1,
+        grid.resurrect({
+            row: 2,
+            column: 3
+        });
+        grid.resurrect({
+            row: 2,
             column: 4
-        }).isAlive().should.be.true;
+        });
+
+        stringify(grid.generate()).should.have.members([
+            "........",
+            "...xx...",
+            "...xx...",
+            "........"
+        ]);
     });
 });
 
 describe("Neighborhood", function () {
-
-    it("should pass 8 dead neighbours to the cell when building next generation", function () {
-        var neighborhood = new Neighborhood(new DeadCell({
-            row: 1,
-            columns: 1
-        }), new Grid(3, 3));
-
-        var neighbours = neighborhood.all;
-
-        neighbours.should.have.length(8);
-        neighbours.forEach(function (neighbour) {
-            neighbour.isAlive().should.be.false;
-        });
-    });
 
     it("should pass 8 dead neighbours to the cell when building next generation", function () {
         var neighborhood = new Neighborhood(new DeadCell({

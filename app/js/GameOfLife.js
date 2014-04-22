@@ -10,7 +10,7 @@ var GameOfLife = (function () {
                 state = ALIVE;
             }, stay = function () {
             },
-            lifeCycle = [0, die, stay, live, die, die, die, die, die];
+            lifeCycle = [stay, die, stay, live, die, die, die, die, die];
 
         return {
             generate: function (neighbours) {
@@ -39,11 +39,11 @@ var GameOfLife = (function () {
         return new Cell(DEAD, coordiantes);
     }
 
-    function Grid(rows, columns, aliveCells) {
-        aliveCells = aliveCells || [];
+    function Grid(rows, columns, alive) {
+        alive = alive || [];
 
         function isAlive(coordinates) {
-            return aliveCells.some(function (cell) {
+            return alive.some(function (cell) {
                 return cell.row === coordinates.row && cell.column === coordinates.column;
             });
         }
@@ -66,20 +66,25 @@ var GameOfLife = (function () {
             }
         }
 
+        function generate() {
+            var generation = [],
+                grid = this;
+            scan(function (cell) {
+                cell.generate(new Neighborhood(cell, grid).all);
+                if(cell.isAlive()) {
+                    generation.push(cell.coordinates);
+                }
+            });
+            return new Grid(rows, columns, generation);
+        }
+
         return {
             scan: scan,
             cell: cell,
             resurrect: function (coordinates) {
-                aliveCells.push(coordinates);
+                alive.push(coordinates);
             },
-            generate: function () {
-                var generation = [],
-                    grid = this;
-                scan(function (cell) {
-                    generation.push(cell.generate(new Neighborhood(cell, grid).all).coordinates);
-                });
-                return new Grid(rows, columns, generation);
-            }
+            generate: generate
         };
     }
 
