@@ -25,11 +25,8 @@ var GameOfLife = (function () {
             isAlive: function () {
                 return state === ALIVE;
             },
-            get row() {
-                return coordinates.row;
-            },
-            get column() {
-                return coordinates.column;
+            get coordinates() {
+                return coordinates;
             }
         };
     }
@@ -42,11 +39,46 @@ var GameOfLife = (function () {
         return new Cell(DEAD, coordiantes);
     }
 
-    function Grid(rows, columns) {
+    function Grid(rows, columns, aliveCells) {
+        aliveCells = aliveCells || [];
+
+        function isAlive(coordinates) {
+            return aliveCells.some(function (cell) {
+                return cell.row === coordinates.row && cell.column === coordinates.column;
+            });
+        }
+
+        function cell(coordinates) {
+            if (isAlive(coordinates) === true) {
+                return new AliveCell(coordinates);
+            }
+            return new DeadCell(coordinates);
+        }
+
+        function scan(closure) {
+            for (var i = 0; i < rows; i++) {
+                for (var j = 0; j < columns; j++) {
+                    closure(cell({
+                        row: i,
+                        column: j
+                    }));
+                }
+            }
+        }
 
         return {
-            cell: function (coordinates) {
-                return new DeadCell(coordinates);
+            scan: scan,
+            cell: cell,
+            resurrect: function (coordinates) {
+                aliveCells.push(coordinates);
+            },
+            generate: function () {
+                var generation = [],
+                    grid = this;
+                scan(function (cell) {
+                    generation.push(cell.generate(new Neighborhood(cell, grid).all).coordinates);
+                });
+                return new Grid(rows, columns, generation);
             }
         };
     }
@@ -64,14 +96,14 @@ var GameOfLife = (function () {
             [1, 1]
         ].forEach(function (coordinates) {
                 neighbours.push(grid.cell({
-                    row: cell.row + coordinates[0],
-                    column: cell.column + coordinates[1]}));
+                    row: cell.coordinates.row + coordinates[0],
+                    column: cell.coordinates.column + coordinates[1]}));
             });
         return {
-            generate: function () {
-                cell.generate(neighbours);
+            get all() {
+                return neighbours;
             }
-        }
+        };
     }
 
     return {

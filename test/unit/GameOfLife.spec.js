@@ -87,54 +87,81 @@ describe('Grid', function () {
 
         cell.isAlive().should.be.false;
     });
+    it("should return an alive cell for resurrected coordinates", function () {
+        var grid = new Grid(3, 3);
+
+        grid.resurrect({
+            row: 2,
+            column: 1
+        });
+
+        grid.cell({
+            row: 2,
+            column: 1
+        }).isAlive().should.be.true;
+    });
+    it("should return next generation", function () {
+        var grid = new Grid(4, 8);
+        grid.resurrect({
+            row: 1,
+            column: 4
+        });
+//        grid.resurrect({
+//            row: 2,
+//            column: 3
+//        });
+//        grid.resurrect({
+//            row: 2,
+//            column: 4
+//        });
+//
+//        var i = 0, line = "";
+//        grid.generate().scan(function (cell) {
+//            line += cell.isAlive() ? "x" : ".";
+//            if(++i % 8 === 0) {
+//                console.log(line);
+//                line = "";
+//            }
+//        });
+        grid.cell({
+            row: 1,
+            column: 4
+        }).isAlive().should.be.true;
+    });
 });
 
 describe("Neighborhood", function () {
 
-    function CellMock(coordinates) {
-        return {
-            generate: function (neighbours) {
-                this.neighbours = neighbours;
-            },
-            row: coordinates.row,
-            column: coordinates.column
-        };
-    }
-
     it("should pass 8 dead neighbours to the cell when building next generation", function () {
-        var cell = new CellMock({
+        var neighborhood = new Neighborhood(new DeadCell({
             row: 1,
-            column: 1
-        });
-        var neighborhood = new Neighborhood(cell, new Grid(3, 3));
+            columns: 1
+        }), new Grid(3, 3));
 
-        neighborhood.generate();
+        var neighbours = neighborhood.all;
 
-        cell.neighbours.should.have.length(8);
-        cell.neighbours.forEach(function (neighbour) {
+        neighbours.should.have.length(8);
+        neighbours.forEach(function (neighbour) {
             neighbour.isAlive().should.be.false;
         });
     });
 
     it("should pass 8 dead neighbours to the cell when building next generation", function () {
-        var cell = new CellMock({
+        var neighborhood = new Neighborhood(new DeadCell({
             row: 1,
-            column: 1
-        }), neighborhood = new Neighborhood(cell, new Grid(3, 3));
+            columns: 1
+        }), new Grid(3, 3));
 
-        neighborhood.generate();
+        var neighbours = neighborhood.all;
 
-        cell.neighbours.should.have.length(8);
-        cell.neighbours.forEach(function (neighbour) {
+        neighbours.should.have.length(8);
+        neighbours.forEach(function (neighbour) {
             neighbour.isAlive().should.be.false;
         });
     });
 
     it("should pass cells which are direct neighbours to the cell", function () {
-        var cell = new CellMock({
-            row: 1,
-            column: 1
-        }), neighbours = [
+        var coordinates = [
             [0, 0],
             [0, 1],
             [0, 2],
@@ -143,14 +170,17 @@ describe("Neighborhood", function () {
             [2, 0],
             [2, 1],
             [2, 2]
-        ], neighborhood = new Neighborhood(cell, new Grid(3, 3));
+        ], neighborhood = new Neighborhood(new DeadCell({
+            row: 1,
+            column: 1
+        }), new Grid(3, 3));
 
-        neighborhood.generate();
+        var neighbours = neighborhood.all;
 
         var i = 0;
-        cell.neighbours.forEach(function (neighbour) {
-            neighbour.row.should.equals(neighbours[i][0]);
-            neighbour.column.should.equals(neighbours[i][1]);
+        neighbours.forEach(function (neighbour) {
+            neighbour.coordinates.row.should.equals(coordinates[i][0]);
+            neighbour.coordinates.column.should.equals(coordinates[i][1]);
             i += 1;
         });
     });
