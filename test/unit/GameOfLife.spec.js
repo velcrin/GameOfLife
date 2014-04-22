@@ -4,22 +4,16 @@ var AliveCell = GameOfLife.AliveCell,
     DeadCell = GameOfLife.DeadCell,
     Grid = GameOfLife.Grid,
     Neighborhood = GameOfLife.Neighborhood,
-    stringify = function (grid) {
+    stringify = function (grid, columns) {
         var i = 0, line = "", lines = [];
         grid.scan(function (cell) {
             line += cell.isAlive() ? "x" : ".";
-            if (++i % 8 === 0) {
+            if (++i % columns === 0) {
                 lines.push(line);
                 line = "";
             }
         });
         return lines;
-    },
-    dump = function (grid) {
-        var lines = stringify(grid);
-        lines.forEach(function (line) {
-            console.log(line);
-        });
     };
 
 
@@ -138,7 +132,7 @@ describe('Grid', function () {
             cell.isAlive().should.equal(cells[i++].isAlive());
         });
     });
-    it("should return next generation", function () {
+    it("should return next generation as described by spec", function () {
         var grid = new Grid(4, 8);
         grid.resurrect({
             row: 1,
@@ -153,7 +147,7 @@ describe('Grid', function () {
             column: 4
         });
 
-        stringify(grid.generate()).should.have.members([
+        stringify(grid.generate(), 8).should.have.members([
             "........",
             "...xx...",
             "...xx...",
