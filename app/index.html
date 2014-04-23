@@ -1,18 +1,19 @@
 <!doctype html>
 <html lang="en" ng-app="GameOfLife">
 <head>
-  <meta charset="utf-8">
-  <title>Game of life</title>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/yeti/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Game of life</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/yeti/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
+<div ng-view></div>
 
-  <div ng-view></div>
-
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/GridCtrl.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="js/main.js"></script>
+<script src="js/GameOfLife.js"></script>
+<script src="js/GridCtrl.js"></script>
 </body>
 </html>

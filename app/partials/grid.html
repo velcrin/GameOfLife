@@ -8,4 +8,13 @@
         </div>
     </a>
     <p>Check out the code by clicking on the progress bar!</p>
+
+    <div class="container">
+        <button type="button" class="btn btn-default" ng-click="onGenerateClick()">Generate</button>
+        <table>
+            <tr ng-repeat="row in rows">
+                <td ng-repeat="cell in row" class="cell {{ cell.state }}" ng-click="onCellClick(cell)"></td>
+            </tr>
+        </table>
+    </div>
 </div>

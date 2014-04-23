@@ -27,6 +27,9 @@ var GameOfLife = (function () {
             },
             get coordinates() {
                 return coordinates;
+            },
+            get state() {
+                return state;
             }
         };
     }
@@ -84,7 +87,25 @@ var GameOfLife = (function () {
             resurrect: function (coordinates) {
                 alive.push(coordinates);
             },
-            generate: generate
+            generate: generate,
+            row: function(index) {
+                var cells = [];
+                for (var i = 0; i < columns; i++) {
+                    cells.push(cell({
+                        row: index,
+                        column: i
+                    }));
+                }
+                return cells;
+            },
+            get rows() {
+                var cells = [];
+                for (var i = 0; i < rows; i++) {
+                    cells.push(this.row(i));
+                }
+                return cells;
+            }
+
         };
     }
 
