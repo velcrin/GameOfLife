@@ -23,7 +23,7 @@ describe('Live cell', function () {
 
         cell.generate([new DeadCell()]);
 
-        cell.isAlive().should.be.true;
+        cell.isAlive().should.be.false;
     });
     it('should die when it has fewer than two live neighbours', function () {
         var cell = new AliveCell();

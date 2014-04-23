@@ -10,7 +10,7 @@ var GameOfLife = (function () {
                 state = ALIVE;
             }, stay = function () {
             },
-            lifeCycle = [stay, die, stay, live, die, die, die, die, die];
+            lifeCycle = [die, die, stay, live, die, die, die, die, die];
 
         return {
             generate: function (neighbours) {
