@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('GameOfLife.controllers', [])
-    .controller('GridCtrl', ['$scope', function ($scope) {
+angular.module('GameOfLife.controllers', ['GameOfLife.services'])
+    .controller('GridCtrl', ['$scope', 'GameOfLife', function ($scope, GameOfLife) {
         var scope = $scope,
             grid = new GameOfLife.Grid(16, 16);
         function reload() {
