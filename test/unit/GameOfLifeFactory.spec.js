@@ -12,7 +12,6 @@ var stringify = function (grid, columns) {
         return lines;
     };
 
-
 describe('Live cell', function () {
 
     beforeEach(module('GameOfLife.services'));
