@@ -1,0 +1,10 @@
+.cell {
+    border: solid 1px gray;
+    height: 25px;
+    width: 25px;
+    padding: 1px;
+}
+
+.alive {
+    background: #5cb85c;
+}
