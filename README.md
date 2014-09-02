@@ -39,3 +39,4 @@ And the output could look like this:
 The input format is similar to that in KataMinesweeper, and is easily parsed in most languages.
 
 Suggested Test Cases Make sure you have enough coverage of edge cases - where there are births and deaths at the edge of the grid.
+
